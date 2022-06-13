@@ -39,7 +39,7 @@
 
   // console.log(parseParams(window.location.search))
   const raffle = parseParams(window.location.search)
-  console.log('raffle obj:', { raffle })
+  // console.log('raffle obj:', { raffle })
 
   let config = {}
   let winners = [];
@@ -89,7 +89,7 @@
     let fireworks = new Fireworks(background);
 
     const lines = document.querySelectorAll('.line');
-    console.log('lines:', { lines })
+    // console.log('lines:', { lines })
 
     const introAnimation = anime.timeline({
       loop: false,
@@ -97,7 +97,7 @@
     });
 
     lines.forEach((el, i) => {
-      console.log('el duration', el.dataset.duration)
+      // console.log('el duration', el.dataset.duration)
       introAnimation
         .add({
           targets: el,
@@ -145,7 +145,7 @@
           win.innerHTML = winner.winner_name;
           winnersBox.appendChild(win);
         });
-        console.log('winnersBox:', { winnersBox })
+        // console.log('winnersBox:', { winnersBox })
         const winnerElements = document.querySelectorAll('.winner');
         winnerElements.forEach((el, i) => {
           winnersAnimation
