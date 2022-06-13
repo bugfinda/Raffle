@@ -11,16 +11,12 @@
 
 <body>
   <div class="content">
-    <h1 class="ml4">
-      <span id="text1" class="letters letters-1">texto1</span>
-      <span id="text2" class="letters letters-2">texto2</span>
-      <span id="text3" class="letters letters-3">texto3</span>
-    </h1>
-    <h1 id="button"> <a href="#" onclick="go()">Sortear</a></h1>
-    <h1 id="winner-name" class="ml2"></h1>
+    <div id="lines"></div>
+    <div id="button"><a href="#" onclick="go()">Sortear</a></div>
+    <div id="winnersBox"></div>
     <img id="avatar" src="">
   </div>
-  <div id="root" class="ml3"></div>
+  <div id="background" class="ml3"></div>
 </body>
 
 <script src="https://unpkg.com/fireworks-js@latest/dist/fireworks.js"></script>
@@ -42,37 +38,46 @@
   };
 
   // console.log(parseParams(window.location.search))
-  let raffle = parseParams(window.location.search)
+  const raffle = parseParams(window.location.search)
   console.log('raffle obj:', { raffle })
 
+  let config = {}
   let winners = [];
 
-  const textWrapper = document.querySelector('.ml2');
-
-  const startButton = document.getElementById('button')
-  const avatar = document.getElementById('avatar')
-  const text1 = document.getElementById('text1');
-  const text2 = document.getElementById('text2');
-  const text3 = document.getElementById('text3');
-
-  var bgImage = 'https://proto-assets.s3.amazonaws.com/pepsico/mar22/bgLogin4.jpg';
-  root.style.backgroundImage = `url(${raffle.bg_image})`;
-
   try {
+    raffle.config = JSON.parse(raffle.config);
+    config = raffle.config;
+
     raffle.winners = JSON.parse(raffle.winners)
     winners = raffle.winners
-    console.log('winners:', { winners })
   } catch (error) {
-
+    console.error('parsing error:', { error })
   }
 
+  const winnersBox = document.getElementById('winnersBox');
+  const startButton = document.getElementById('button')
+  const avatar = document.getElementById('avatar')
+
+  background.style.backgroundImage = `url(${config.bgImage})`;
+
+  const opacityIn = [0, 1];
+  const scaleIn = [0.2, 1];
+  const scaleOut = 3;
+  const durationIn = 1500;
+  const durationOut = 500;
+  const delay = 1000;
+  const duration = 1000
+
+
   function setup() {
-    textWrapper.innerHTML = winners[0].winner_name;
-    textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-    text1.innerHTML = raffle.text1;
-    text2.innerHTML = raffle.text2;
-    text3.innerHTML = raffle.text3;
     startButton.innerHTML = raffle.btnText;
+    config.texts.forEach((text, i) => {
+      let line = document.createElement('div');
+      line.classList.add('line');
+      line.innerHTML = text.text;
+      line.setAttribute('data-duration', text.duration ?? duration);
+      document.getElementById('lines').appendChild(line);
+    });
   }
 
   function go() {
@@ -80,86 +85,79 @@
     startButton.style.display = 'none';
     avatar.style.display = 'none';
 
-    let root = document.getElementById('root');
-    let fireworks = new Fireworks(root);
+    let background = document.getElementById('background');
+    let fireworks = new Fireworks(background);
 
-    function endPromissed() {
+    const lines = document.querySelectorAll('.line');
+    console.log('lines:', { lines })
+
+    const introAnimation = anime.timeline({
+      loop: false,
+      easing: 'easeInOutQuad',
+    });
+
+    lines.forEach((el, i) => {
+      console.log('el duration', el.dataset.duration)
+      introAnimation
+        .add({
+          targets: el,
+          opacity: opacityIn,
+          scale: scaleIn,
+          duration: el.dataset.duration * .8,
+        })
+        .add({
+          targets: el,
+          opacity: 0,
+          scale: scaleOut,
+          duration: el.dataset.duration * .2,
+          delay: el.dataset.duration,
+          complete: () => {
+            el.remove();
+          }
+        });
+    });
+    introAnimation.finished.then(animateWinners)
+
+    function animateWinners() {
       fireworks.start()
-      if (winners[0].winner_image) {
-        avatar.src = winners[0].winner_image;
-        avatar.style.display = 'block';
+      const winnersAnimation = anime.timeline({
+        loop: false,
+        easing: 'easeInOutQuad',
+      });
+      if (winners.length === 1) {
+        if (winners[0].winner_image) {
+          avatar.src = winners[0].winner_image;
+          avatar.style.display = 'block';
+        }
+        winnersBox.style.fontSize = '6rem';
+        winnersBox.innerHTML = winners[0].winner_name;
+        winnersAnimation.add({
+          targets: winnersBox,
+          opacity: opacityIn,
+          scale: scaleIn,
+          duration: durationIn,
+        });
+      }
+      else {
+        winners.forEach((winner, i) => {
+          let win = document.createElement('div');
+          win.classList.add('winner');
+          win.innerHTML = winner.winner_name;
+          winnersBox.appendChild(win);
+        });
+        console.log('winnersBox:', { winnersBox })
+        const winnerElements = document.querySelectorAll('.winner');
+        winnerElements.forEach((el, i) => {
+          winnersAnimation
+            .add({
+              targets: el,
+              opacity: opacityIn,
+              scale: scaleIn,
+              duration: 100,
+            })
+        })
       }
     }
-
-    let ml4 = {};
-    ml4.opacityIn = [0, 1];
-    ml4.scaleIn = [0.2, 1];
-    ml4.scaleOut = 3;
-    ml4.durationIn = 1000;
-    ml4.durationOut = 600;
-    ml4.delay = 1000;
-    let animation = anime.timeline({ loop: false })
-      .add({
-        delay: 200
-      })
-      .add({
-        targets: '.ml4 .letters-1',
-        opacity: ml4.opacityIn,
-        scale: ml4.scaleIn,
-        duration: ml4.durationIn,
-      }).add({
-        targets: '.ml4 .letters-1',
-        opacity: 0,
-        scale: ml4.scaleOut,
-        duration: ml4.durationOut,
-        easing: "easeInExpo",
-        delay: ml4.delay
-      }).add({
-        targets: '.ml4 .letters-2',
-        opacity: ml4.opacityIn,
-        scale: ml4.scaleIn,
-        duration: ml4.durationIn
-      }).add({
-        targets: '.ml4 .letters-2',
-        opacity: 0,
-        scale: ml4.scaleOut,
-        duration: ml4.durationOut,
-        easing: "easeInExpo",
-        delay: ml4.delay
-      }).add({
-        targets: '.ml4 .letters-3',
-        opacity: ml4.opacityIn,
-        scale: ml4.scaleIn,
-        duration: ml4.durationIn
-      }).add({
-        targets: '.ml4 .letters-3',
-        opacity: 0,
-        scale: ml4.scaleOut,
-        duration: ml4.durationOut,
-        easing: "easeInExpo",
-        delay: ml4.delay
-      }).add({
-        targets: '.ml4',
-        opacity: 0,
-        duration: 500,
-        delay: 500,
-      }).add({
-        targets: '.ml2 .letter',
-        scale: [4, 1],
-        opacity: [0, 1],
-        translateZ: 0,
-        easing: "easeOutExpo",
-        duration: 500,
-        delay: (el, i) => 10 * i
-      }).add({
-        targets: '.ml2',
-        opacity: 100,
-        duration: 700,
-        easing: "easeOutExpo",
-        delay: 0
-      });
-    animation.finished.then(endPromissed)
-    console.log(animation.finished)
   }
 </script>
 
@@ -175,7 +173,39 @@
     color: #ffffff;
   }
 
-  a {
+  #background {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .content {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #button {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    font-size: 3em;
+  }
+
+  #button a {
     background-color: #0090d3;
     padding: 5px 20px 10px 20px;
     border-radius: 20px;
@@ -185,68 +215,49 @@
     text-decoration: none;
   }
 
-  #root {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: -1;
-    /* background-image: url("https://proto-assets.s3.amazonaws.com/pepsico/mar22/bgLogin4.jpg"); */
-    background-size: cover;
-    background-position: "left-top";
-    background-attachment: fixed;
-  }
-
-  .content {
-    padding: 300px 0px 200px 0px;
-    z-index: 1;
-    height: 100vh;
-  }
-
-  .ml4 {
+  #lines {
     position: relative;
     font-weight: 900;
     font-size: 4.5em;
     text-align: center;
   }
 
-  .ml4 .letters {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    top: 0.3em;
-    right: 0;
+  #lines .line {
+    line-height: 32px;
     opacity: 0;
-    cursor: default;
   }
 
-  .ml2 {
+  #winnersBox {
+    position: relative;
     font-weight: 900;
-    font-size: 5em;
-    text-align: center;
+    width: 100%;
+    max-height: 90vh;
+    padding: 0 18px;
+    font-size: 1.6rem;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 
-  .ml2 .letter {
-    display: inline-block;
-    line-height: 1em;
-    opacity: 0
+  #winnersBox .winner {
+    position: relative;
+    margin: 6px 30px;
+    text-align: left;
   }
 
-  #button {
-    font-weight: 600;
-    font-size: 3em;
-    text-align: center;
-    z-index: 1;
-    margin-top: 300px;
-  }
 
   #avatar {
     position: relative;
     display: none;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
     border-radius: 50%;
+    object-fit: cover;
     animation: fadein 1.3s;
   }
 
