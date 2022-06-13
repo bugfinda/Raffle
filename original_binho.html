@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROCK and RECYCLE STORE by Braskem</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FF63EFEB4Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-FF63EFEB4Z');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    @font-face {
+      font-family: "custom";
+      src: url("fonts/intelo-bold-webfont.woff") format(woff);
+      src: url("fonts/Intelo-ExtraBold.woff") format(woff);
+      src: url("fonts/Intelo-SemiBold.woff") format(woff);
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: #6D067C;
+      /*font-family: 'intelo','Lato', sans-serif;*/
+
+      background-image: url("img/bg.jpg");
+      background-size: cover;
+      background-position: "left-top";
+      background-attachment: fixed;
+      letter-spacing: 0.03em;
+    }
+
+    div {
+      font-family: 'custom';
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: auto;
+    }
+
+    .navbar {
+      background-color: #1791fa;
+      width: 100%;
+      height: 100px;
+    }
+
+    .nav-img-container {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-block;
+      width: 30%;
+    }
+
+    .nav-img-container Img {
+      padding-left: 10px;
+    }
+
+    .nav-menu-container {
+      vertical-align: bottom;
+      color: #000;
+      display: inline-block;
+      width: 69%;
+      text-align: Left;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .nav-menu-container Li {
+      display: inline;
+      padding-right: 30px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .nav-menu-container A {
+      color: #000;
+      text-decoration: none;
+    }
+
+    .nav-menu-container .login {
+      background-color: #ffd200;
+      padding: 10px 30px 10px 30px;
+      border-radius: 30px;
+    }
+
+    .nav-menu-container .selected {
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .content {
+      width: 80%;
+      margin: auto;
+      margin-bottom: 40px;
+      margin-top: 120px;
+      text-align: center;
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    .content Ul {
+      list-style: decimal;
+      text-align: left;
+
+    }
+
+    .left {
+      display: inline-block;
+      width: 50%;
+      max-width: 636px;
+      margin: auto;
+      text-align: left;
+    }
+
+    .right {
+      display: inline-block;
+      width: 33%;
+      vertical-align: top;
+      padding-left: 85px;
+    }
+
+    .content-img-logo {
+      margin-bottom: 10px;
+    }
+
+    P {
+      text-align: left;
+      padding: 0px;
+      margin-top: 30px;
+    }
+
+    .center-span {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    span {
+      padding-top: -20px;
+    }
+
+    .content-bolder {
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .qtd {
+      color: #1791fa;
+      font-size: 8em;
+      line-height: 0.8em;
+    }
+
+    .super-size {
+      font-size: 2em;
+    }
+
+    #links {
+      display: block;
+    }
+
+    @media screen and (max-width: 1024px) {
+      #links {
+        display: none;
+        position: absolute;
+        top: 25px;
+        right: 0px;
+        background-color: #1791fa;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5em;
+      }
+
+      #links.visible {
+        display: block;
+      }
+
+      .navbar {
+        height: 50px;
+      }
+
+      .nav-img-container {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60%;
+      }
+
+      .nav-img-container Img {
+        height: 35px;
+        width: auto;
+        padding-top: 5px;
+        padding-left: 5px;
+      }
+
+      .nav-menu-container {
+        text-align: right;
+        width: 38%;
+      }
+
+      .mobile-menu {
+        display: block;
+        font-size: 28px;
+      }
+
+      .nav-menu-container Li {
+        display: block;
+        padding-right: 0px;
+        padding-bottom: 10px;
+      }
+
+      .nav-menu-container .login {
+        background-color: #ffd200;
+        padding: 0px;
+        border-radius: 0px;
+        margin: 0px 10px 10px 10px
+      }
+
+      .content {
+        margin-top: 80px;
+        width: 100%;
+      }
+
+      .left {
+        display: block;
+        width: 90%;
+        max-width: 636px;
+        margin: auto;
+        text-align: left;
+
+      }
+
+      .right {
+        display: block;
+        width: 90%;
+        padding-left: 0px;
+        padding-top: 30px;
+        text-align: center;
+        margin: auto;
+
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="content">
+    <div class="left">
+      <img class="content-img-logo" src="img/RRbyBraskem-Regulamento.png"><br>
+      <p class="content-bolder">Olá, USERNAME.</p>
+      <p>Parabéns, você ajudou o planeta reciclando<br>
+        <span><b class="qtd">35</b><b class="super-size content-bolder">&nbsp; ITENS </b>&nbsp;ATÉ AGORA</span>
+      </p>
+      <p>Seu saldo atual para troca é de<br>
+        <span><b class="qtd">20</b><b class="super-size content-bolder">&nbsp; CREDITOS</b></span><br>
+        Atenção, seu saldo expira no final do dia.<br>Veja os itens na <a href="#">PÁGINA DE BRINDES</a>
+      </p>
+    </div>
+    <div class="right">
+      <img src="img/kv-regulamento.png">
+    </div>
+  </div>
+  <script>
+    let objectFromURL = parseParams(window.location.search)
+    console.log({ objectFromURL })
+
+
+
+    function parseParams(queryString) {
+      const params = new URLSearchParams(queryString);
+      const obj = {};
+      for (const key of params.keys()) {
+        if (params.getAll(key).length > 1) {
+          obj[key] = params.getAll(key);
+        } else {
+          obj[key] = params.get(key);
+        }
+      }
+      return obj;
+    };
+
+    function removeLogged() {
+      localStorage.removeItem('logged')
+    }
+
+    function mobileMenu() {
+      var x = document.getElementById("links");
+      x.classList.toggle('visible');
+    }
+  </script>
+
+</body>
+
+</html>
